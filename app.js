@@ -10,12 +10,14 @@ const usersRouter = require('./routes/users');
 const articlesRouters = require('./routes/articles');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
+const limiter = require('./middlewares/limiter');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const NotFoundError = require('./errors/NotFoundError');
 
 const { PORT = 3000 } = process.env;
 const { MONGO_DB = 'mongodb://localhost:27017/birdsnewsdb' } = process.env;
 const app = express();
+
 app.use(helmet());
 
 app.use(bodyParser.json());
@@ -28,6 +30,8 @@ mongoose.connect(MONGO_DB, {
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
+
+app.use(limiter);
 
 app.use(requestLogger);
 

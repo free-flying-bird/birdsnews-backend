@@ -53,17 +53,11 @@ module.exports.login = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.getUsersById = (req, res, next) => {
-  User.findById(req.params.id)
-    .orFail(new Error('notFound'))
-    .then((user) => {
-      res.status(200).send({ data: user });
+module.exports.getUser = (req, res, next) => {
+  User.findById(req.user._id)
+    .orFail(new NotFoundError('Пользователь с данным ID не найден'))
+    .then((users) => {
+      res.status(200).send({ data: users });
     })
-    .catch((err) => {
-      if (err === 'notFound') {
-        throw new NotFoundError('Пользователь с таким ID не найден');
-      } else {
-        next(err);
-      }
-    });
+    .catch(next);
 };
