@@ -18,7 +18,7 @@ articlesRouter.post('/articles', celebrate({
 
 articlesRouter.delete('/articles/:id', celebrate({
   params: Joi.object().keys({
-    ArticleId: Joi.string().length(24).hex(),
+    id: Joi.string().length(24).hex(),
   }),
 }), deleteArticle);
 

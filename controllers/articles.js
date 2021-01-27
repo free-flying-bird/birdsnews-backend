@@ -1,7 +1,7 @@
 const Article = require('../models/article');
 const BadRequestError = require('../errors/BadRequestError');
-const AuthError = require('../errors/AuthError');
 const ForbiddenError = require('../errors/ForbiddenError');
+const NotFoundError = require('../errors/NotFoundError');
 
 module.exports.getArticles = (req, res, next) => {
   Article.find({})
@@ -30,18 +30,15 @@ module.exports.createArticle = (req, res, next) => {
 
 module.exports.deleteArticle = (req, res, next) => {
   Article.findById(req.params.id)
-    .orFail()
+    .orFail(new NotFoundError('Статья с данным ID не найдена'))
     .then((article) => {
       const { owner } = article;
       if (req.user._id === owner.toString()) {
-        Article.findByIdAndRemove(req.params.id)
-          .then(() => res.send({ message: 'Карточка успешно удалена' }));
-      } throw new ForbiddenError('Нет доступа');
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        throw new AuthError('Переданы некорректные данные');
-      } else next(err);
+        Article.deleteOne(article)
+          .then(() => res.status(200).send({ message: 'Карточка успешно удалена' }));
+      } else {
+        throw new ForbiddenError('Нет доступа');
+      }
     })
     .catch(next);
 };

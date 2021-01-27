@@ -40,7 +40,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret-key', { expiresIn: '7d' });
       res.cookie('jwt', token, {
-        maxAge: 3600000 * 24 * 7,
+        maxAge: 3600000 * 24 * 2,
         httpOnly: true,
         sameSite: true,
       });
@@ -53,17 +53,20 @@ module.exports.login = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.getUsersById = (req, res, next) => {
-  User.findById(req.params.id)
-    .orFail(new Error('notFound'))
+module.exports.getUser = (req, res, next) => {
+  User.findById(req.user._id)
+    .orFail(new NotFoundError('Пользователь с данным ID не найден'))
     .then((user) => {
       res.status(200).send({ data: user });
     })
-    .catch((err) => {
-      if (err === 'notFound') {
-        throw new NotFoundError('Пользователь с таким ID не найден');
-      } else {
-        next(err);
-      }
-    });
+    .catch(next);
+};
+
+module.exports.logout = (req, res) => {
+  res.cookie('jwt', '', {
+    httpOnly: true,
+    maxAge: 0,
+    sameSite: true,
+  });
+  res.status(200).send({ message: 'Выход выполнен успешно' });
 };
