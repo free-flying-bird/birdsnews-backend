@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+// const referrerPolicy = require('referrer-policy');
 const { celebrate, Joi, errors } = require('celebrate');
 require('dotenv').config();
 
@@ -19,29 +20,31 @@ const { PORT = 3000 } = process.env;
 const { MONGO_DB = 'mongodb://localhost:27017/birdsnewsdb' } = process.env;
 const app = express();
 
-// const corsOptions = {
-//   origin: ['https://birdsnews.tk', 'http://birdsnews.tk', 'http://localhost:8080', 'http://sokolik90.github.io', 'https://www.sokolik90.github.io'],
-//   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-//   preflightContinue: false,
-//   optionsSuccessStatus: 200,
-//   allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
-//   credentials: true,
-// };
-
-const whitelist = ['https://birdsnews.tk', 'http://localhost:8080', 'http://birdsnews.tk'];
 const corsOptions = {
-  origin(origin, callback) {
-    if (whitelist.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Запрос не разрешен CORS'));
-    }
-  },
+  origin: ['https://birdsnews.tk', 'http://birdsnews.tk', 'http://localhost:8080', 'http://sokolik90.github.io', 'https://www.sokolik90.github.io'],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 200,
+  allowedHeaders: ['Content-Type', 'origin', 'Authorization', 'x-access-token', 'accept', 'Access-Control-Allow-Origin'],
   credentials: true,
 };
 
-app.use('*', cors(corsOptions));
+// const whitelist = ['https://birdsnews.tk', 'http://localhost:8080', 'http://birdsnews.tk'];
+// const corsOptions = {
+//   origin(origin, callback) {
+//     if (whitelist.includes(origin) || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Запрос не разрешен CORS'));
+//     }
+//   },
+//   credentials: true,
+// };
+
+// app.use(referrerPolicy());
+
 app.use(helmet());
+app.use('*', cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
