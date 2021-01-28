@@ -23,12 +23,12 @@ const corsOptions = {
   origin: ['https://birdsnews.tk', 'http://birdsnews.tk', 'http://localhost:8080', 'http://sokolik90.github.io', 'https://www.sokolik90.github.io'],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
   preflightContinue: false,
-  optionsSuccessStatus: 204,
+  optionsSuccessStatus: 200,
   allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
   credentials: true,
 };
 
-app.use(cors(corsOptions));
+app.use('*', cors(corsOptions));
 app.use(helmet());
 
 app.use(bodyParser.json());
