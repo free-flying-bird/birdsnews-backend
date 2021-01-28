@@ -20,28 +20,26 @@ const { PORT = 3000 } = process.env;
 const { MONGO_DB = 'mongodb://localhost:27017/birdsnewsdb' } = process.env;
 const app = express();
 
-// const corsOptions = {
-//   origin: ['http://localhost:8080',
-//     'http://birdsnews.tk',
-//     'http://sokolik90.github.io'],
-//   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-//   preflightContinue: false,
-//   optionsSuccessStatus: 204,
-//   allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
-//   credentials: 'include',
-// };
-
-const whitelist = ['https://birdsnews.tk', 'http://localhost:8080', 'http://birdsnews.tk'];
 const corsOptions = {
-  origin(origin, callback) {
-    if (whitelist.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Запрос не разрешен CORS'));
-    }
-  },
-  credentials: 'include',
+  origin: [true],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+  credentials: true,
 };
+
+// const whitelist = ['https://birdsnews.tk', 'http://localhost:8080', 'http://birdsnews.tk'];
+// const corsOptions = {
+//   origin(origin, callback) {
+//     if (whitelist.includes(origin) || !origin) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error('Запрос не разрешен CORS'));
+//     }
+//   },
+//   credentials: true,
+// };
 
 app.use(helmet());
 app.use(cors(corsOptions));
