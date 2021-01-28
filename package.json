@@ -33,6 +33,7 @@
     "joi": "^17.2.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.7",
+    "referrer-policy": "^1.2.0",
     "winston": "^3.3.3"
   },
   "devDependencies": {
