@@ -23,8 +23,8 @@ const app = express();
 const corsOptions = {
   origin: ['https://birdsnews.tk', 'http://birdsnews.tk', 'http://localhost:8080', 'http://sokolik90.github.io', 'https://www.sokolik90.github.io'],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  preflightContinue: false,
-  optionsSuccessStatus: 200,
+  preflightContinue: true,
+  optionsSuccessStatus: 204,
   allowedHeaders: ['Content-Type', 'origin', 'Authorization', 'x-access-token', 'accept', 'Access-Control-Allow-Origin'],
   credentials: true,
 };
