@@ -21,7 +21,7 @@ const { MONGO_DB = 'mongodb://localhost:27017/birdsnewsdb' } = process.env;
 const app = express();
 
 const corsOptions = {
-  origin: ['https://www.birdsnews.tk',
+  origin: ['https://birdsnews.tk',
     'http://birdsnews.tk',
     'http://localhost:8080',
     'http://sokolik90.github.io',
