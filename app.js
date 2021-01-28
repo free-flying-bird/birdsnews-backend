@@ -29,7 +29,7 @@ const app = express();
 //   credentials: true,
 // };
 
-const whitelist = ['https://birdsnews.tk', 'http://localhost:8080', 'http://birdsnews.tk'];
+const whitelist = ['https://birdsnews.tk', 'http://sokolik90.github.io', 'https://sokolik90.github.io', 'https://www.birdsnews.tk', 'http://localhost:8080', 'http://birdsnews.tk', 'http://www.birdsnews.tk'];
 const corsOptions = {
   origin(origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
