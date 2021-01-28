@@ -30,30 +30,40 @@ const app = express();
 // };
 
 const whitelist = ['https://birdsnews.tk', 'http://localhost:8080', 'http://birdsnews.tk'];
-const corsOptionsDelegate = function (req, callback) {
-  const corsOptions = {};
-  if (whitelist.indexOf(req.header('Origin')) !== -1) {
-    // eslint-disable-next-line no-const-assign
-    corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
-  } else {
-    // eslint-disable-next-line no-const-assign
-    corsOptions = { origin: false }; // disable CORS for this request
-  }
-  callback(null, corsOptions); // callback expects two parameters: error and options
+const corsOptions = {
+  origin(origin, callback) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 };
-// const corsOptions = {
-//   origin(origin, callback) {
-//     if (whitelist.includes(origin) || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Запрос не разрешен CORS'));
-//     }
-//   },
-//   credentials: true,
+// const corsOptionsDelegate = function (req, callback) {
+//   const corsOptions = {};
+//   if (whitelist.indexOf(req.header('Origin')) !== -1) {
+//     // eslint-disable-next-line no-const-assign
+//     corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+//   } else {
+//     // eslint-disable-next-line no-const-assign
+//     corsOptions = { origin: false }; // disable CORS for this request
+//   }
+//   callback(null, corsOptions); // callback expects two parameters: error and options
 // };
+// // const corsOptions = {
+// //   origin(origin, callback) {
+// //     if (whitelist.includes(origin) || !origin) {
+// //       callback(null, true);
+// //     } else {
+// //       callback(new Error('Запрос не разрешен CORS'));
+// //     }
+// //   },
+// //   credentials: true,
+// // };
 
 app.use(helmet());
-app.use(cors(corsOptionsDelegate));
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
