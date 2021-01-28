@@ -21,11 +21,20 @@ const { MONGO_DB = 'mongodb://localhost:27017/birdsnewsdb' } = process.env;
 const app = express();
 
 const corsOptions = {
-  origin: ['https://birdsnews.tk', 'http://birdsnews.tk', 'http://localhost:8080', 'http://sokolik90.github.io', 'https://www.sokolik90.github.io'],
+  origin: ['https://www.birdsnews.tk',
+    'http://birdsnews.tk',
+    'http://localhost:8080',
+    'http://sokolik90.github.io',
+    'https://www.sokolik90.github.io'],
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  preflightContinue: true,
+  preflightContinue: false,
   optionsSuccessStatus: 204,
-  allowedHeaders: ['Content-Type', 'origin', 'Authorization', 'x-access-token', 'accept', 'Access-Control-Allow-Origin'],
+  allowedHeaders: ['Content-Type',
+    'origin',
+    'Authorization',
+    'x-access-token',
+    'accept',
+    'Access-Control-Allow-Origin'],
   credentials: true,
 };
 
@@ -44,8 +53,7 @@ const corsOptions = {
 // app.use(referrerPolicy());
 
 app.use(helmet());
-app.options(cors(corsOptions));
-app.use('*', cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
