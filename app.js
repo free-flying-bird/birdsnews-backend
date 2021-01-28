@@ -19,12 +19,24 @@ const { PORT = 3000 } = process.env;
 const { MONGO_DB = 'mongodb://localhost:27017/birdsnewsdb' } = process.env;
 const app = express();
 
+// const corsOptions = {
+//   origin: ['https://birdsnews.tk', 'http://birdsnews.tk', 'http://localhost:8080', 'http://sokolik90.github.io', 'https://www.sokolik90.github.io'],
+//   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+//   preflightContinue: false,
+//   optionsSuccessStatus: 200,
+//   allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+//   credentials: true,
+// };
+
+const whitelist = ['https://birdsnews.tk', 'http://localhost:8080', 'http://birdsnews.tk'];
 const corsOptions = {
-  origin: ['https://birdsnews.tk', 'http://birdsnews.tk', 'http://localhost:8080', 'http://sokolik90.github.io', 'https://www.sokolik90.github.io'],
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  preflightContinue: false,
-  optionsSuccessStatus: 200,
-  allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+  origin(origin, callback) {
+    if (whitelist.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Запрос не разрешен CORS'));
+    }
+  },
   credentials: true,
 };
 
