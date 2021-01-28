@@ -20,16 +20,27 @@ const { PORT = 3000 } = process.env;
 const { MONGO_DB = 'mongodb://localhost:27017/birdsnewsdb' } = process.env;
 const app = express();
 
-const corsOptions = {
-  origin: [true],
-  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-  allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
-  credentials: true,
-};
+// const corsOptions = {
+//   origin: [true],
+//   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+//   preflightContinue: false,
+//   optionsSuccessStatus: 204,
+//   allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+//   credentials: true,
+// };
 
-// const whitelist = ['https://birdsnews.tk', 'http://localhost:8080', 'http://birdsnews.tk'];
+const whitelist = ['https://birdsnews.tk', 'http://localhost:8080', 'http://birdsnews.tk'];
+const corsOptionsDelegate = function (req, callback) {
+  const corsOptions = {};
+  if (whitelist.indexOf(req.header('Origin')) !== -1) {
+    // eslint-disable-next-line no-const-assign
+    corsOptions = { origin: true }; // reflect (enable) the requested origin in the CORS response
+  } else {
+    // eslint-disable-next-line no-const-assign
+    corsOptions = { origin: false }; // disable CORS for this request
+  }
+  callback(null, corsOptions); // callback expects two parameters: error and options
+};
 // const corsOptions = {
 //   origin(origin, callback) {
 //     if (whitelist.includes(origin) || !origin) {
@@ -42,7 +53,7 @@ const corsOptions = {
 // };
 
 app.use(helmet());
-app.use(cors(corsOptions));
+app.use(cors(corsOptionsDelegate));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
