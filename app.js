@@ -33,8 +33,7 @@ const corsOptions = {
     'origin',
     'Authorization',
     'x-access-token',
-    'accept',
-    'Access-Control-Allow-Origin'],
+    'accept'],
   credentials: true,
 };
 
