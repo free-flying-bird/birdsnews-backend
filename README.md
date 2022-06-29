@@ -6,7 +6,7 @@
 ### HTML, CSS, JS, Webpack, NODE.JS, NPM, EXPRESS.JS, Mongoose, Mongo, Eslint
 ### How to use (instruction for terminal):
 ### 1) Install NODE.JS;
-### 2) Make clone of repository: git clone https://github.com/sokolik90/birdsnews-backend.git
+### 2) Make clone of repository: git clone https://github.com/free-flying-bird/birdsnews-backend.git
 ### 3) Install NPM: npm install;
 ### 4) Install Express.js: npm install express --save;
 ### For use command (starts the app on the local server: localhost:3000):
